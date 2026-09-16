@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<title>B·I·L — Bar Is Loaded</title>
+<meta name="description" content="一人で順位をかけた重量の駆け引きを。自分とライバルの全試技から、狙う順位に必要な重量を即算出。">
+<meta name="theme-color" content="#EFEDE6">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="B·I·L">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFEDE6; --card:#FBFAF6; --ink:#17140E; --ink-2:#726B5E; --ink-3:#A39B8B;
+    --rule:#17140E; --soft:#DAD6CB;
+    --red:#CE342B; --good:#1C934F;
+    --p25:#D4322C; --p20:#2554C7; --p15:#E8B21E; --p10:#1C934F; --p5:#F4F2EC; --p2:#2A2620; --p125:#B7AE9D;
+    --f:"Archivo","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--paper);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.4;font-weight:500;
+    max-width:540px;margin:0 auto;-webkit-font-smoothing:antialiased;padding:0 14px calc(122px + env(safe-area-inset-bottom))}
+  .tnum{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+  button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none}
+  input{font-family:inherit}
+  ::selection{background:var(--ink);color:var(--paper)}
+  :focus-visible{outline:2.5px solid var(--red);outline-offset:2px}
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(16px + env(safe-area-inset-top)) 2px 12px}
+  .mark{display:flex;align-items:center;gap:11px}
+  .mark svg{width:34px;height:34px;display:block}
+  .mark .jp{font-weight:900;font-size:25px;letter-spacing:.11em;line-height:1}
+  .mark .en{font-size:8.5px;letter-spacing:.26em;color:var(--ink-2);text-transform:uppercase;margin-top:3px;font-weight:700}
+  .reset{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--ink-2);border:2px solid var(--soft);border-radius:3px;padding:7px 11px}
+  .reset:active{border-color:var(--red);color:var(--red)}
+
+  .tabs{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--card);box-shadow:3px 3px 0 var(--ink)}
+  .tabs button{padding:13px 6px;font-weight:800;font-size:15px;letter-spacing:.02em;color:var(--ink-2)}
+  .tabs button+button{border-left:2px solid var(--ink)}
+  .tabs button.on{background:var(--ink);color:var(--paper)}
+  .view{margin-top:16px}.view.hide{display:none}
+
+  /* switcher */
+  .switch{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+  .switch::-webkit-scrollbar{display:none}
+  .pill{flex:0 0 auto;position:relative;border:2px solid var(--ink);border-radius:3px;background:var(--card);padding:8px 12px;min-width:70px;text-align:left}
+  .pill.on{background:var(--ink);color:var(--paper);box-shadow:3px 3px 0 var(--red)}
+  .pill .pn{font-weight:800;font-size:14px;white-space:nowrap;max-width:96px;overflow:hidden;text-overflow:ellipsis}
+  .pill .pm{font-weight:800;font-size:11px;margin-top:2px;opacity:.75}
+  .pill .pm b{color:var(--red)}.pill.on .pm b{color:#ff9a92}
+  .pill .px{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;border:2px solid var(--paper);font-weight:900;font-size:13px;line-height:1;display:none;align-items:center;justify-content:center}
+  .pill.on.rival .px{display:flex}
+  .pill.add{min-width:46px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;border-style:dashed;color:var(--red)}
+  .pill.add.dis{opacity:.35;pointer-events:none}
+
+  .bwfield{display:flex;align-items:center;gap:12px;border:2px solid var(--ink);border-radius:3px;background:var(--card);padding:11px 14px;margin-bottom:14px}
+  .bwfield input.nm{flex:1;min-width:0;background:transparent;border:0;color:var(--ink);font-weight:800;font-size:17px;outline:none}
+  .bwfield input.nm:disabled{color:var(--ink);-webkit-text-fill-color:var(--ink);opacity:1}
+  .bwfield .sep{width:2px;align-self:stretch;background:var(--soft)}
+  .bwfield label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:800}
+  .bwfield input.bw{width:86px;background:transparent;border:0;color:var(--ink);font-weight:800;font-size:18px;text-align:right;outline:none}
+
+  .card{border:2px solid var(--ink);border-radius:3px;background:var(--card);overflow:hidden;box-shadow:3px 3px 0 var(--ink)}
+  .ghead{display:grid;grid-template-columns:38px 1fr 1fr 1fr 66px;background:var(--ink);color:var(--paper)}
+  .ghead span{padding:8px 4px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+  .ghead span:first-child{text-align:left;padding-left:12px}.ghead span:last-child{text-align:right;padding-right:12px}
+  .grow{display:grid;grid-template-columns:38px 1fr 1fr 1fr 66px;border-top:2px solid var(--ink)}
+  .grow .gl{display:flex;align-items:center;padding-left:12px;font-weight:900;font-size:17px}
+  .acell{border-left:2px solid var(--soft);display:flex;flex-direction:column}
+  .acell input{width:100%;background:transparent;border:0;color:var(--ink);font-weight:800;font-size:18px;text-align:center;outline:none;padding:9px 2px 5px}
+  .acell input::placeholder{color:var(--ink-3);font-weight:700}
+  .acell input:focus{background:#FFF7D6}
+  .lamp{display:flex;justify-content:center;padding:0 0 8px}
+  .lamp button{width:22px;height:22px;border-radius:50%;border:2.5px solid var(--ink-3);background:var(--card);position:relative}
+  .lamp button.ok{border-color:var(--good);background:var(--good)}
+  .lamp button.ok::after{content:"";position:absolute;left:5px;top:2px;width:6px;height:11px;border:solid var(--card);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .lamp button.no{border-color:var(--red);background:var(--red)}
+  .lamp button.no::after{content:"×";position:absolute;inset:0;color:var(--card);font-weight:900;font-size:15px;line-height:17px}
+  .gbest{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-right:9px;border-left:2px solid var(--soft);overflow:hidden;min-width:0}
+  .gbest b{font-weight:900;font-size:15px;white-space:nowrap}.gbest.empty b{color:var(--ink-3)}
+  .acell.bad{background:#FBE6E4}
+  .acell.bad input{color:var(--red)}
+  .gbest small{font-size:8px;letter-spacing:.1em;color:var(--ink-2);font-weight:800}
+  .totline{display:flex;justify-content:space-between;align-items:baseline;border:2px solid var(--ink);border-top:0;border-radius:0 0 3px 3px;background:var(--ink);color:var(--paper);padding:9px 12px;margin-top:-2px}
+  .totline .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;opacity:.85}
+  .totline .v{font-weight:900;font-size:20px}.totline .v small{font-size:10px;opacity:.7;margin-left:2px}
+
+  .hint{font-size:11.5px;color:var(--ink-2);line-height:1.6;margin:12px 4px 0;font-weight:600}.hint b{color:var(--ink)}
+
+  /* rank controls */
+  .ctl{border:2px solid var(--ink);border-radius:3px;background:var(--card);padding:13px;margin-bottom:16px}
+  .ctl .cap{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:800;margin-bottom:8px}
+  .segline{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--ink);border-radius:3px;overflow:hidden}
+  .segline button{padding:11px 4px;font-weight:800;font-size:15px;color:var(--ink-2);background:var(--card)}
+  .segline button+button{border-left:2px solid var(--ink)}
+  .segline button.on{background:var(--red);color:var(--paper)}
+  .rungs{display:flex;gap:7px;flex-wrap:wrap}
+  .rung{border:2px solid var(--ink);border-radius:3px;padding:8px 13px;font-weight:800;font-size:15px;background:var(--card)}
+  .rung.on{background:var(--red);color:var(--paper)}
+
+  .srow{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:11px 12px;border:2px solid var(--ink);border-radius:3px;background:var(--card);margin-bottom:8px}
+  .srow.me{background:var(--ink);color:var(--paper)}
+  .srow.p1{box-shadow:3px 3px 0 var(--red)}
+  .srow .rk{font-weight:900;font-size:20px;text-align:center}
+  .srow.me .rk{color:var(--paper)}.srow.p1:not(.me) .rk{color:var(--red)}
+  .srow .snm{font-weight:800;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .srow .sbw{font-size:11px;font-weight:600;opacity:.7;margin-top:1px}
+  .srow .sv{font-weight:900;font-size:20px;text-align:right}.srow .sv small{font-size:9px;font-weight:700;opacity:.65;margin-left:2px}
+  .srow .sd{font-size:11px;font-weight:800;text-align:right;margin-top:1px}
+  .sd.pos{color:var(--good)}.srow.me .sd.pos{color:#7fe3a0}.sd.neg{color:var(--red)}.srow.me .sd.neg{color:#ff9a92}
+
+  .lab2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:800;margin:0 2px 9px}
+
+  /* result bar */
+  .result{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:3px solid var(--ink);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));max-width:540px;margin:0 auto}
+  .result .top{display:flex;align-items:center;gap:14px}
+  .result .pbadge{border:2px solid var(--ink);border-radius:3px;padding:5px 9px;text-align:center;flex:0 0 auto;min-width:52px}
+  .result .pbadge .n{font-weight:900;font-size:22px;line-height:1}
+  .result .pbadge .k{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:800}
+  .result .main{flex:1;min-width:0}
+  .result .main .lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:800}
+  .result .main .big{font-weight:900;font-size:38px;line-height:1;color:var(--red);letter-spacing:-.01em}
+  .result .main .big.crown{font-size:26px;color:var(--ink)}
+  .result .main .big.unset{color:var(--ink-3);font-size:22px}
+  .result .main .big .u{font-size:15px;color:var(--ink-2);margin-left:3px;font-weight:800}
+  .result .main .big .pre{font-size:15px;color:var(--ink-2);margin-right:4px;font-weight:800}
+  .result .plates{display:flex;align-items:center;gap:3px;margin-top:8px;min-height:20px;flex-wrap:wrap}
+  .result .plates .ps{font-size:12px;font-weight:800;color:var(--ink-2);margin-left:6px}
+  .fp{height:20px;border-radius:2px;border:1.5px solid rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#17140E}
+  .fp.dark{color:#FBFAF6}
+  .fbar{width:16px;height:5px;background:var(--ink-3);border-radius:1px}
+  .empty{color:var(--ink-3);font-size:13px;text-align:center;padding:16px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="mark">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <rect x="2" y="17.4" width="36" height="5.2" rx="1.6" fill="#17140E"/>
+      <rect x="3" y="10.5" width="5.4" height="19" rx="1.6" fill="#D4322C"/>
+      <rect x="9" y="13.5" width="3.6" height="13" rx="1.2" fill="#2554C7"/>
+      <rect x="27.4" y="13.5" width="3.6" height="13" rx="1.2" fill="#2554C7"/>
+      <rect x="31.6" y="10.5" width="5.4" height="19" rx="1.6" fill="#D4322C"/>
+    </svg>
+    <div><div class="jp">B·I·L</div></div>
+  </div>
+  <button class="reset" id="resetBtn">リセット</button>
+</header>
+
+<div class="tabs">
+  <button id="tabIn" class="on">試技入力</button>
+  <button id="tabRk">順位・駆け引き</button>
+</div>
+
+<!-- INPUT -->
+<div class="view" id="viewIn">
+  <div class="switch" id="switch"></div>
+  <div class="bwfield">
+    <input id="edName" class="nm" type="text" placeholder="ライバル名">
+    <div class="sep"></div>
+    <label>体重</label><input id="edBw" class="bw" type="number" inputmode="decimal" step="0.01" placeholder="58.90"><span style="font-weight:800;color:var(--ink-2)">kg</span>
+  </div>
+  <div class="card">
+    <div class="ghead"><span>種目</span><span>第1</span><span>第2</span><span>第3</span><span>ベスト</span></div>
+    <div id="grid"></div>
+  </div>
+  <div class="totline"><span class="l" id="edWho">トータル</span><span class="v tnum"><span id="edTot">0</span><small>kg</small></span></div>
+  <div class="hint">重量を入れて<b>ランプ</b>をタップ：未 →〈緑〉成功 →〈赤〉失敗。成功の最大がベストになり、トータルへ反映されます。自分もライバルも同じ様式で全9試技を記録できます。</div>
+</div>
+
+<!-- RANK -->
+<div class="view hide" id="viewRk">
+  <div class="ctl">
+    <div class="cap">自分が次に構える種目</div>
+    <div class="segline" id="solve"><button data-s="sq">スクワット</button><button data-s="bp">ベンチ</button><button data-s="dl" class="on">デッド</button></div>
+    <div class="cap" style="margin-top:14px">狙う順位</div>
+    <div class="rungs" id="rungs"></div>
+  </div>
+  <div class="lab2">順位</div>
+  <div id="stand"></div>
+  <div class="hint">同点は<b>体重が軽い方</b>が上位。必要重量は安全側で相手を上回る計算（2.5kg刻み）。狙う順位を変えると、下の必要重量が切り替わります。</div>
+</div>
+
+<!-- RESULT -->
+<div class="result">
+  <div class="top">
+    <div class="pbadge"><div class="n tnum" id="rPlace">–</div><div class="k">位</div></div>
+    <div class="main"><div class="lab" id="rLab">1位に必要 · デッド</div><div class="big unset tnum" id="rBig">–</div></div>
+  </div>
+  <div class="plates" id="rPlates"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id)};
+  var LIFTS=[{k:"sq",n:"SQ"},{k:"bp",n:"BP"},{k:"dl",n:"DL"}];
+  var LAB={sq:"スクワット",bp:"ベンチ",dl:"デッド"};
+  var PLATES=[{w:25,c:"var(--p25)",d:1},{w:20,c:"var(--p20)",d:1},{w:15,c:"var(--p15)",d:0},{w:10,c:"var(--p10)",d:1},{w:5,c:"var(--p5)",d:0},{w:2.5,c:"var(--p2)",d:1},{w:1.25,c:"var(--p125)",d:0},{w:0.5,c:"var(--p125)",d:0},{w:0.25,c:"var(--p125)",d:0}];
+  var MAX=20, uid=1, KEY="bil_free_v1";
+  function a(){return{w:"",s:0}}
+  function blankAtt(){return{sq:[a(),a(),a()],bp:[a(),a(),a()],dl:[a(),a(),a()]}}
+  var S={lifters:[{id:0,self:true,name:"自分",bw:"",att:blankAtt()}], activeId:0, solve:"dl", targetR:1, tab:"in"};
+
+  function num(v){var n=parseFloat(v);return(v===""||v==null||isNaN(n))?null:n}
+  function bwS(v){var n=num(v);return n==null?Infinity:n}
+  function fmt(n){if(n==null||isNaN(n))return"–";return(Math.round(n*100)/100).toString()}
+  function esc(s){return(s+"").replace(/[<>&]/g,function(c){return{"<":"&lt;",">":"&gt;","&":"&amp;"}[c]})}
+  function roundUp(v){return Math.ceil(v/2.5-1e-9)*2.5}
+  function selfL(){return S.lifters[0]}
+  function byId(id){for(var i=0;i<S.lifters.length;i++)if(S.lifters[i].id===id)return S.lifters[i];return null}
+  function attemptValid(L,k,i){if(i===0)return true;var cur=num(L.att[k][i].w),prev=num(L.att[k][i-1].w);if(cur==null||prev==null)return true;return cur+1e-9>=prev}
+  function bestGood(L,k){var b=null;for(var i=0;i<3;i++){var x=L.att[k][i];if(x.s===1&&attemptValid(L,k,i)){var w=num(x.w);if(w!=null&&(b==null||w>b))b=w}}return b}
+  function topEntered(L,k){var b=null;L.att[k].forEach(function(x){var w=num(x.w);if(w!=null&&(b==null||w>b))b=w});return b}
+  function totalOf(L){var t=0;LIFTS.forEach(function(l){var b=bestGood(L,l.k);if(b!=null)t+=b});return t}
+
+  function save(){try{localStorage.setItem(KEY,JSON.stringify({lifters:S.lifters,activeId:S.activeId,solve:S.solve,targetR:S.targetR,uid:uid}))}catch(e){}}
+  function load(){try{var d=JSON.parse(localStorage.getItem(KEY));if(!d)return;if(d.lifters&&d.lifters.length)S.lifters=d.lifters;
+    S.solve=d.solve||"dl";S.targetR=d.targetR||1;uid=d.uid||1;S.activeId=byId(d.activeId)?d.activeId:0}catch(e){}}
+
+  function ranked(){var a=S.lifters.map(function(L){return{L:L,t:totalOf(L),b:bwS(L.bw)}});
+    a.sort(function(x,y){if(y.t!==x.t)return y.t-x.t;if(x.b!==y.b)return x.b-y.b;return x.L.id-y.L.id});return a}
+  function selfPlace(){var s=selfL(),sT=totalOf(s),sB=bwS(s.bw),ah=0;
+    S.lifters.forEach(function(L){if(L.self)return;var t=totalOf(L),b=bwS(L.bw);if(t>sT||(t===sT&&b<sB))ah++});return ah+1}
+  function needVs(rT,rBw){var sB=bwS(selfL().bw),rB=bwS(rBw);var tie=(sB!==Infinity&&rB!==Infinity&&sB<rB);return rT+(tie?0:2.5)}
+  function reqTotalForPlace(R){var o=S.lifters.filter(function(L){return !L.self}).map(function(L){return needVs(totalOf(L),L.bw)});
+    if(!o.length)return null;if(R>o.length)return 0;o.sort(function(x,y){return y-x});return o[R-1]}
+
+  /* switcher */
+  function renderSwitcher(){
+    var host=$("switch");host.innerHTML="";var rk={};ranked().forEach(function(r,i){rk[r.L.id]=i+1});
+    S.lifters.forEach(function(L){
+      var p=document.createElement("div");p.className="pill"+(L.self?"":" rival")+(L.id===S.activeId?" on":"");
+      var nm=L.self?"自分":(L.name||("R"+L.id));
+      p.innerHTML='<div class="pn">'+esc(nm)+'</div><div class="pm"><b>'+(rk[L.id]||"–")+'位</b> '+fmt(totalOf(L))+'</div>';
+      if(!L.self){var x=document.createElement("button");x.className="px";x.textContent="×";
+        x.addEventListener("click",function(e){e.stopPropagation();removeLifter(L.id)});p.appendChild(x)}
+      p.addEventListener("click",function(){S.activeId=L.id;renderSwitcher();renderEditor()});
+      host.appendChild(p);
+    });
+    var add=document.createElement("div");add.className="pill add"+(S.lifters.length>MAX?" dis":"");add.textContent="＋";
+    add.addEventListener("click",addLifter);host.appendChild(add);
+  }
+  function addLifter(){if(S.lifters.length>MAX)return;var id=uid++;S.lifters.push({id:id,self:false,name:"",bw:"",att:blankAtt()});
+    S.activeId=id;renderSwitcher();renderEditor();refresh()}
+  function removeLifter(id){if(id===0)return;var L=byId(id);if(!confirm((L&&L.name?L.name:"このライバル")+" を削除しますか？"))return;
+    S.lifters=S.lifters.filter(function(x){return x.id!==id});if(S.activeId===id)S.activeId=0;renderSwitcher();renderEditor();refresh()}
+
+  /* editor */
+  function renderEditor(){
+    var L=byId(S.activeId)||selfL();
+    var nF=$("edName"),bF=$("edBw");
+    nF.value=L.self?"自分":(L.name||"");nF.disabled=!!L.self;nF.placeholder=L.self?"自分":"ライバル名";
+    bF.value=L.bw;
+    $("edWho").textContent=(L.self?"自分":(L.name||"ライバル"))+" のトータル";
+    var g=$("grid");g.innerHTML="";
+    cellRefs={sq:[],bp:[],dl:[]};
+    LIFTS.forEach(function(l){
+      var row=document.createElement("div");row.className="grow";
+      var gl=document.createElement("div");gl.className="gl";gl.textContent=l.n;row.appendChild(gl);
+      for(var i=0;i<3;i++){(function(i){
+        var cell=document.createElement("div");cell.className="acell";
+        var inp=document.createElement("input");inp.type="number";inp.inputMode="decimal";inp.step="2.5";inp.value=L.att[l.k][i].w;inp.placeholder="–";
+        inp.addEventListener("input",function(){L.att[l.k][i].w=inp.value;validateLift(L,l.k);updateBest(L);refresh()});
+        inp.addEventListener("change",function(){enforceLift(L,l.k);updateBest(L);refresh()});
+        var lw=document.createElement("div");lw.className="lamp";
+        var d=document.createElement("button");var s=L.att[l.k][i].s;d.className=(s===1?"ok":s===2?"no":"");d.setAttribute("aria-label","結果");
+        d.addEventListener("click",function(){L.att[l.k][i].s=(L.att[l.k][i].s+1)%3;var ns=L.att[l.k][i].s;d.className=(ns===1?"ok":ns===2?"no":"");updateBest(L);refresh()});
+        lw.appendChild(d);cell.appendChild(inp);cell.appendChild(lw);row.appendChild(cell);
+        cellRefs[l.k][i]={cell:cell,inp:inp};
+      })(i)}
+      var best=document.createElement("div");var bv=bestGood(L,l.k);best.className="gbest"+(bv==null?" empty":"");best.setAttribute("data-b",l.k);
+      best.innerHTML="<b>"+(bv!=null?fmt(bv):"–")+"</b><small>KG</small>";row.appendChild(best);g.appendChild(row);
+    });
+    LIFTS.forEach(function(l){validateLift(L,l.k)});
+    $("edTot").textContent=fmt(totalOf(L));
+  }
+  var cellRefs={sq:[],bp:[],dl:[]};
+  function validateLift(L,k){
+    for(var i=0;i<3;i++){var ref=cellRefs[k][i];if(!ref)continue;
+      var cur=num(L.att[k][i].w),prev=(i>0?num(L.att[k][i-1].w):null);
+      var bad=(i>0&&prev!=null&&cur!=null&&cur+1e-9<prev);
+      ref.cell.classList.toggle("bad",bad);
+      ref.inp.min=(prev!=null?prev:"");
+    }
+  }
+  function enforceLift(L,k){
+    for(var i=1;i<3;i++){var cur=num(L.att[k][i].w),prev=num(L.att[k][i-1].w);
+      if(cur!=null&&prev!=null&&cur+1e-9<prev){L.att[k][i].w=String(prev);if(cellRefs[k][i])cellRefs[k][i].inp.value=String(prev)}}
+    validateLift(L,k);
+  }
+  function updateBest(L){if(L.id!==S.activeId)return;
+    document.querySelectorAll("#grid [data-b]").forEach(function(el){var k=el.getAttribute("data-b");var bv=bestGood(L,k);el.className="gbest"+(bv==null?" empty":"");el.innerHTML="<b>"+(bv!=null?fmt(bv):"–")+"</b><small>KG</small>"});
+    $("edTot").textContent=fmt(totalOf(L));
+  }
+  $("edName").addEventListener("input",function(){var L=byId(S.activeId);if(L&&!L.self){L.name=$("edName").value;renderSwitcher();refresh()}});
+  $("edBw").addEventListener("input",function(){var L=byId(S.activeId);if(L){L.bw=$("edBw").value;refresh()}});
+
+  /* rungs (target place) */
+  function renderRungs(){
+    var host=$("rungs");host.innerHTML="";var n=S.lifters.length; // self+rivals
+    var maxP=Math.min(n,10);if(maxP<1)maxP=1;
+    if(S.targetR>maxP)S.targetR=1;
+    for(var R=1;R<=maxP;R++){(function(R){
+      var b=document.createElement("button");b.className="rung"+(R===S.targetR?" on":"");b.textContent=R+"位";
+      b.addEventListener("click",function(){S.targetR=R;renderRungs();refresh();save()});host.appendChild(b);
+    })(R)}
+  }
+
+  /* standings */
+  function renderStand(){
+    var host=$("stand");host.innerHTML="";var rk=ranked(),sT=totalOf(selfL());
+    rk.forEach(function(r,i){
+      var row=document.createElement("div");row.className="srow"+(r.L.self?" me":"")+(i===0?" p1":"");
+      var nm=r.L.self?"自分":(r.L.name||("R"+r.L.id));
+      var d=r.L.self?null:(sT-r.t);var dHTML=(d==null)?"":('<div class="sd '+(d>=0?"pos":"neg")+'">'+(d>=0?"+":"")+fmt(d)+'</div>');
+      row.innerHTML='<div class="rk tnum">'+(i+1)+'</div>'+
+        '<div style="min-width:0"><div class="snm">'+esc(nm)+'</div><div class="sbw tnum">'+(r.b===Infinity?"体重 –":fmt(r.b)+" kg")+'</div></div>'+
+        '<div><div class="sv tnum">'+fmt(r.t)+'<small>kg</small></div>'+dHTML+'</div>';
+      host.appendChild(row);
+    });
+  }
+
+  /* result bar */
+  function flatPlates(total){
+    var host=$("rPlates");host.innerHTML="";var barW=25;
+    if(total==null||isNaN(total)||total<barW)return;
+    var per=(total-barW)/2,rem=Math.round(per*100)/100,used=[];
+    PLATES.forEach(function(p){while(rem+1e-9>=p.w){used.push(p);rem=Math.round((rem-p.w)*100)/100}});
+    var bar=document.createElement("div");bar.className="fbar";host.appendChild(bar);
+    used.forEach(function(p){var el=document.createElement("div");el.className="fp"+(p.d?" dark":"");el.style.background=p.c;el.style.width=(p.w>=20?15:p.w>=10?13:p.w>=5?11:9)+"px";el.textContent=(p.w>=5?p.w:"");host.appendChild(el)});
+    var c={};used.forEach(function(p){c[p.w]=(c[p.w]||0)+1});
+    var t=document.createElement("span");t.className="ps";t.textContent="次の"+LAB[S.solve]+" "+fmt(total)+"kg ・ 片側 "+Object.keys(c).sort(function(x,y){return y-x}).map(function(w){return c[w]+"×"+w}).join("+")+(Math.abs(rem)>0.01?" (端数"+fmt(rem)+")":"");host.appendChild(t);
+  }
+  function refresh(){
+    $("rPlace").textContent=selfPlace();
+    var big=$("rBig"),lab=$("rLab");
+    var otherSum=0,ok=true;LIFTS.forEach(function(l){if(l.k===S.solve)return;var v=bestGood(selfL(),l.k);if(v==null)v=topEntered(selfL(),l.k);if(v==null)ok=false;else otherSum+=v});
+    var R=S.targetR,reqT=reqTotalForPlace(R);
+    if(reqT==null){lab.textContent="ライバル未登録";big.className="big crown tnum";big.textContent="首位";flatPlates(null);}
+    else if(!ok){lab.innerHTML=R+'位到達まで · 他種目を入力';big.className="big unset tnum";big.textContent="–";flatPlates(null);}
+    else{
+      var sT=totalOf(selfL());
+      var gap=roundUp(Math.max(0,reqT-sT));
+      var need=roundUp(Math.max(0,reqT-otherSum));
+      var floor=topEntered(selfL(),S.solve);        // 次の試技は直近以上でなければならない
+      if(floor!=null){var f=roundUp(floor);if(f>need)need=f;}
+      if(R===1 && sT>0 && sT>=reqT){var second=ranked()[1];var m=second?sT-second.t:null;
+        lab.textContent="1位キープ中";big.className="big crown tnum";big.textContent="首位 "+(m!=null?"+"+fmt(m):"");flatPlates(null);}
+      else if(gap<=0){
+        lab.textContent=R+"位 到達済み";big.className="big crown tnum";big.textContent="達成";flatPlates(null);}
+      else{
+        lab.innerHTML=LAB[S.solve]+'で '+R+'位到達まで';
+        big.className="big tnum";big.innerHTML='<span class="pre">あと</span>'+fmt(gap)+'<span class="u">kg</span>';
+        flatPlates(need);
+      }
+    }
+    renderSwitcher();renderStand();renderRungs();save();
+  }
+
+  /* tabs */
+  function setTab(t){S.tab=t;$("tabIn").classList.toggle("on",t==="in");$("tabRk").classList.toggle("on",t==="rk");
+    $("viewIn").classList.toggle("hide",t!=="in");$("viewRk").classList.toggle("hide",t!=="rk")}
+
+  /* events */
+  $("tabIn").addEventListener("click",function(){setTab("in")});
+  $("tabRk").addEventListener("click",function(){setTab("rk")});
+  $("solve").addEventListener("click",function(e){var b=e.target.closest("button[data-s]");if(!b)return;S.solve=b.getAttribute("data-s");
+    $("solve").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)});refresh()});
+  $("resetBtn").addEventListener("click",function(){if(!confirm("全てのリフター・試技をリセットしますか？"))return;
+    S.lifters=[{id:0,self:true,name:"自分",bw:"",att:blankAtt()}];S.activeId=0;S.solve="dl";S.targetR=1;uid=1;
+    $("solve").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-s")==="dl")});
+    renderSwitcher();renderEditor();refresh();setTab("in")});
+
+  /* init */
+  load();
+  $("solve").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-s")===S.solve)});
+  renderSwitcher();renderEditor();setTab("in");refresh();
+  if("serviceWorker" in navigator){try{navigator.serviceWorker.register("sw.js")}catch(e){}}
+})();
+</script>
+</body>
+</html>
