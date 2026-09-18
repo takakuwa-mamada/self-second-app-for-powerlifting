@@ -126,4 +126,4 @@ To deploy, drop this folder onto any static host such as GitHub Pages. Served ov
 - Native store distribution via PWABuilder / Expo
 
 ### Author / License
-Created by **YOUR NAME** — [GitHub](https://github.com/YOUR-USERNAME) · MIT License
+Created by **Masaki Takakuwa** — [GitHub](https://github.com/takakuwa-mamada) · MIT License
