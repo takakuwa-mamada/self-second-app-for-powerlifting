@@ -234,18 +234,16 @@
 <!-- TOOLS -->
 <div class="view hide" id="viewTl">
   <div class="tsec">
-    <div class="h">1RM 計算（FWJ RM換算表）</div>
+    <div class="h">1RM 計算</div>
     <div class="card"><div id="rmRows"></div>
       <div class="totrow"><span class="l">推定トータル（3種目）</span><span class="v tnum"><span id="rmTotal">0</span><small> kg</small></span></div>
     </div>
-    <div class="sub2">計算式：FWJ RM換算表。<b>スクワット・デッド＝重量×回数÷33.3＋重量</b>、<b>ベンチ＝重量×回数÷40＋重量</b>。レップ数が少ないほど精度が高いです。</div>
     <div class="seg" id="pctLift"><button data-l="sq">スクワット</button><button data-l="bp" class="on">ベンチ</button><button data-l="dl">デッド</button></div>
     <div class="pct" id="pctTable"></div>
-    <div class="hint">上の%早見表は、選んだ種目の推定1RMに対する割合を2.5kg刻みで表示します（トレーニング重量の目安）。</div>
   </div>
 
   <div class="tsec">
-    <div class="h">IPF GL ポイント（Goodlift）</div>
+    <div class="h">IPF GL ポイント</div>
     <div class="card">
       <div class="togs">
         <div class="tog" id="glSex"><button data-v="m" class="on">男性</button><button data-v="f">女性</button></div>
@@ -259,7 +257,6 @@
       <button class="useTotal" id="useTotal">↻ 自分の記録（体重・トータル）を反映</button>
       <div class="glout"><div class="k">GL ポイント</div><div class="v tnum" id="glPts">–</div></div>
     </div>
-    <div class="hint">体重とトータルは<b>「試技入力」の自分の記録から自動反映</b>されます（このタブを開くたびに更新）。手入力で仮の値も試せます。係数はIPF公式(2020)。式：Total×100/(A − B·e^(−C×体重))。</div>
   </div>
 </div>
 
