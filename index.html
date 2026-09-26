@@ -41,7 +41,7 @@
   .reset{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--ink-2);border:2px solid var(--soft);border-radius:3px;padding:7px 11px}
   .reset:active{border-color:var(--red);color:var(--red)}
 
-  .tabs{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--card);box-shadow:3px 3px 0 var(--ink)}
+  .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;border:2px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--card);box-shadow:3px 3px 0 var(--ink)}
   .tabs button{padding:13px 6px;font-weight:800;font-size:15px;letter-spacing:.02em;color:var(--ink-2)}
   .tabs button+button{border-left:2px solid var(--ink)}
   .tabs button.on{background:var(--ink);color:var(--paper)}
@@ -138,6 +138,46 @@
   .fp.dark{color:#FBFAF6}
   .fbar{width:16px;height:5px;background:var(--ink-3);border-radius:1px}
   .empty{color:var(--ink-3);font-size:13px;text-align:center;padding:16px;font-weight:700}
+  /* ===== tools (GL / 1RM) ===== */
+  .tsec{margin-top:20px}
+  .tsec>.h{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:800;margin:0 2px 10px}
+  .l1{display:grid;grid-template-columns:44px 1fr 1fr 74px;align-items:stretch;border-top:2px solid var(--ink)}
+  .l1:first-child{border-top:0}
+  .l1 .nm{display:flex;align-items:center;padding-left:12px;font-weight:900;font-size:16px}
+  .l1 .f{border-left:2px solid var(--soft);display:flex;flex-direction:column;justify-content:center}
+  .l1 .f label{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:800;padding:5px 0 0 10px}
+  .l1 .f input{width:100%;background:transparent;border:0;color:var(--ink);font-weight:800;font-size:17px;text-align:center;outline:none;padding:2px 2px 7px}
+  .l1 .f input:focus{background:#FFF7D6}
+  .l1 .o{border-left:2px solid var(--ink);background:#EAF3EC;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:5px 4px}
+  .l1 .o .v{font-weight:900;font-size:18px;color:#125e33;line-height:1}
+  .l1 .o .k{font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#3a7a54;font-weight:800;margin-top:2px}
+  .totrow{display:flex;justify-content:space-between;align-items:baseline;background:var(--ink);color:var(--paper);padding:10px 13px}
+  .totrow .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;opacity:.85}
+  .totrow .v{font-weight:900;font-size:22px}.totrow .v small{font-size:11px;opacity:.7}
+  .sub2{font-size:11.5px;color:var(--ink-2);font-weight:600;margin:9px 4px 0;line-height:1.6}.sub2 b{color:var(--ink)}
+  .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:2px solid var(--ink);border-radius:3px;overflow:hidden;margin:12px 0}
+  .seg button{padding:9px 4px;font-weight:800;font-size:14px;color:var(--ink-2)}
+  .seg button+button{border-left:2px solid var(--ink)}
+  .seg button.on{background:var(--red);color:var(--paper)}
+  .pct{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+  .pcell{border:1.5px solid var(--soft);border-radius:3px;text-align:center;padding:7px 2px;background:var(--card)}
+  .pcell .p{font-size:10px;font-weight:800;color:var(--ink-2)}
+  .pcell .w{font-weight:900;font-size:15px;margin-top:1px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink)}
+  .fld{padding:9px 12px}.fld+.fld{border-left:2px solid var(--soft)}
+  .fld label{display:block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:800;margin-bottom:3px}
+  .fld input{width:100%;background:transparent;border:0;color:var(--ink);font-weight:800;font-size:18px;outline:none}
+  .fld input:focus{background:#FFF7D6}
+  .togs{padding:11px 12px 0;display:flex;flex-direction:column;gap:8px}
+  .tog{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:2px solid var(--ink);border-radius:3px;overflow:hidden}
+  .tog button{padding:8px 4px;font-weight:800;font-size:13px;color:var(--ink-2)}
+  .tog button+button{border-left:2px solid var(--ink)}
+  .tog button.on{background:var(--ink);color:var(--paper)}
+  .glout{margin-top:2px;padding:16px 14px;text-align:center;border-top:2px solid var(--ink);background:radial-gradient(120% 130% at 50% 0,#f6f3ea,#fbfaf6)}
+  .glout .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:800}
+  .glout .v{font-weight:900;font-size:50px;line-height:1;color:var(--red);letter-spacing:-.01em;margin-top:2px}
+  .glout .v .hintbig{font-size:15px;color:var(--ink-3);font-weight:800;line-height:1.5}
+  .useTotal{display:block;width:100%;text-align:center;font-size:12px;font-weight:800;color:var(--good);padding:9px;border-top:2px solid var(--soft)}
 </style>
 </head>
 <body>
@@ -159,6 +199,7 @@
 <div class="tabs">
   <button id="tabIn" class="on">試技入力</button>
   <button id="tabRk">順位・駆け引き</button>
+  <button id="tabTl">ツール</button>
 </div>
 
 <!-- INPUT -->
@@ -188,6 +229,38 @@
   <div class="lab2">順位</div>
   <div id="stand"></div>
   <div class="hint">同点は<b>体重が軽い方</b>が上位。必要重量は安全側で相手を上回る計算（2.5kg刻み）。狙う順位を変えると、下の必要重量が切り替わります。</div>
+</div>
+
+<!-- TOOLS -->
+<div class="view hide" id="viewTl">
+  <div class="tsec">
+    <div class="h">1RM 計算（FWJ RM換算表）</div>
+    <div class="card"><div id="rmRows"></div>
+      <div class="totrow"><span class="l">推定トータル（3種目）</span><span class="v tnum"><span id="rmTotal">0</span><small> kg</small></span></div>
+    </div>
+    <div class="sub2">計算式：FWJ RM換算表。<b>スクワット・デッド＝重量×回数÷33.3＋重量</b>、<b>ベンチ＝重量×回数÷40＋重量</b>。レップ数が少ないほど精度が高いです。</div>
+    <div class="seg" id="pctLift"><button data-l="sq">スクワット</button><button data-l="bp" class="on">ベンチ</button><button data-l="dl">デッド</button></div>
+    <div class="pct" id="pctTable"></div>
+    <div class="hint">上の%早見表は、選んだ種目の推定1RMに対する割合を2.5kg刻みで表示します（トレーニング重量の目安）。</div>
+  </div>
+
+  <div class="tsec">
+    <div class="h">IPF GL ポイント（Goodlift）</div>
+    <div class="card">
+      <div class="togs">
+        <div class="tog" id="glSex"><button data-v="m" class="on">男性</button><button data-v="f">女性</button></div>
+        <div class="tog" id="glEq"><button data-v="classic" class="on">クラシック(RAW)</button><button data-v="equipped">エキップド</button></div>
+        <div class="tog" id="glEv"><button data-v="pl" class="on">パワーリフティング</button><button data-v="bench">ベンチプレス</button></div>
+      </div>
+      <div class="grid2" style="margin-top:11px">
+        <div class="fld"><label>体重 kg</label><input id="glBw" type="number" inputmode="decimal" step="0.01" placeholder="58.90"></div>
+        <div class="fld"><label id="glTotLab">トータル kg</label><input id="glTot" type="number" inputmode="decimal" step="2.5" placeholder="405"></div>
+      </div>
+      <button class="useTotal" id="useTotal">↻ 自分の記録（体重・トータル）を反映</button>
+      <div class="glout"><div class="k">GL ポイント</div><div class="v tnum" id="glPts">–</div></div>
+    </div>
+    <div class="hint">体重とトータルは<b>「試技入力」の自分の記録から自動反映</b>されます（このタブを開くたびに更新）。手入力で仮の値も試せます。係数はIPF公式(2020)。式：Total×100/(A − B·e^(−C×体重))。</div>
+  </div>
 </div>
 
 <!-- RESULT -->
@@ -223,9 +296,55 @@
   function topEntered(L,k){var b=null;L.att[k].forEach(function(x){var w=num(x.w);if(w!=null&&(b==null||w>b))b=w});return b}
   function totalOf(L){var t=0;LIFTS.forEach(function(l){var b=bestGood(L,l.k);if(b!=null)t+=b});return t}
 
-  function save(){try{localStorage.setItem(KEY,JSON.stringify({lifters:S.lifters,activeId:S.activeId,solve:S.solve,targetR:S.targetR,uid:uid}))}catch(e){}}
+  /* ===== TOOLS: 1RM (FWJ) + GL ===== */
+  var rm={sq:{w:"",r:""},bp:{w:"",r:""},dl:{w:"",r:""}}, glc={sex:"m",eq:"classic",ev:"pl",bw:"",tot:""}, pctLift="bp";
+  var COEF={m:{classic:{pl:{A:1199.72839,B:1025.18162,C:0.00921},bench:{A:320.98041,B:281.40258,C:0.01008}},
+               equipped:{pl:{A:1236.25115,B:1449.21864,C:0.01644},bench:{A:381.22073,B:733.79378,C:0.02398}}},
+             f:{classic:{pl:{A:610.32796,B:1045.59282,C:0.03048},bench:{A:142.40398,B:442.52671,C:0.04724}},
+               equipped:{pl:{A:758.63878,B:949.31382,C:0.02435},bench:{A:221.82209,B:357.00377,C:0.02937}}}};
+  function r1(n){return Math.round(n*10)/10}
+  function r25(n){return Math.round(n/2.5)*2.5}
+  function est1(k){var w=num(rm[k].w),r=num(rm[k].r);if(w==null||r==null||w<=0||r<1)return null;var div=(k==="bp")?40:33.3;return w*r/div+w;}
+  function renderRM(){
+    var host=$("rmRows");host.innerHTML="";
+    LIFTS.forEach(function(l){var e=est1(l.k);
+      var row=document.createElement("div");row.className="l1";
+      row.innerHTML='<div class="nm">'+l.n+'</div>'+
+        '<div class="f"><label>重量 kg</label><input data-k="'+l.k+'" data-t="w" type="number" inputmode="decimal" step="2.5" value="'+rm[l.k].w+'" placeholder="–"></div>'+
+        '<div class="f"><label>レップ</label><input data-k="'+l.k+'" data-t="r" type="number" inputmode="numeric" step="1" value="'+rm[l.k].r+'" placeholder="–"></div>'+
+        '<div class="o"><div class="v tnum">'+(e!=null?r1(e):"–")+'</div><div class="k">推定1RM</div></div>';
+      host.appendChild(row);});
+    host.querySelectorAll("input").forEach(function(i){i.addEventListener("input",function(){rm[i.getAttribute("data-k")][i.getAttribute("data-t")]=i.value;updateRM();save();})});
+    updateRM();
+  }
+  function updateRM(){var rows=$("rmRows").children,tot=0,any=false;
+    LIFTS.forEach(function(l,idx){var e=est1(l.k);var cell=rows[idx]&&rows[idx].querySelector(".o .v");if(cell)cell.textContent=(e!=null?r1(e):"–");if(e!=null){tot+=e;any=true}});
+    $("rmTotal").textContent=any?r1(tot):"0";renderPct();}
+  function renderPct(){var e=est1(pctLift),host=$("pctTable");host.innerHTML="";
+    [100,95,90,85,80,75,70,65,60,55].forEach(function(p){var w=(e!=null)?r25(e*p/100):null;
+      var d=document.createElement("div");d.className="pcell";d.innerHTML='<div class="p">'+p+'%</div><div class="w tnum">'+(w!=null?fmt(w):"–")+'</div>';host.appendChild(d)});}
+  function calcGL(){var bw=num(glc.bw),tot=num(glc.tot);
+    $("glTotLab").textContent=(glc.ev==="bench"?"ベンチ記録 kg":"トータル kg");
+    if(bw==null||tot==null||tot<=0){var miss=(bw==null&&(tot==null||tot<=0))?("体重と"+(glc.ev==="bench"?"ベンチ記録":"トータル")):(bw==null?"体重":(glc.ev==="bench"?"ベンチ記録":"トータル"));
+      $("glPts").innerHTML='<span class="hintbig">'+miss+'を入力してください</span>';return}
+    var bwc=Math.max(bw,40),c=COEF[glc.sex][glc.eq][glc.ev],d=c.A-c.B*Math.exp(-c.C*bwc);
+    if(d<=0){$("glPts").innerHTML='<span class="hintbig">値を確認してください</span>';return}
+    $("glPts").textContent=(tot*100/d).toFixed(2);}
+  function syncGL(){var s=selfL();if(s.bw!==""&&s.bw!=null)glc.bw=String(s.bw);var t=totalOf(s);if(t>0)glc.tot=String(r1(t));
+    $("glBw").value=glc.bw||"";$("glTot").value=glc.tot||"";calcGL();}
+  function bindTog(id,key,after){$(id).addEventListener("click",function(e){var b=e.target.closest("button[data-v]");if(!b)return;glc[key]=b.getAttribute("data-v");$(id).querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)});if(after)after();save();});}
+  function toolsInit(){
+    $("glSex").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-v")===glc.sex)});
+    $("glEq").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-v")===glc.eq)});
+    $("glEv").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-v")===glc.ev)});
+    $("pctLift").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-l")===pctLift)});
+    renderRM();calcGL();
+  }
+
+  function save(){try{localStorage.setItem(KEY,JSON.stringify({lifters:S.lifters,activeId:S.activeId,solve:S.solve,targetR:S.targetR,uid:uid,rm:rm,gl:glc,pctLift:pctLift}))}catch(e){}}
   function load(){try{var d=JSON.parse(localStorage.getItem(KEY));if(!d)return;if(d.lifters&&d.lifters.length)S.lifters=d.lifters;
-    S.solve=d.solve||"dl";S.targetR=d.targetR||1;uid=d.uid||1;S.activeId=byId(d.activeId)?d.activeId:0}catch(e){}}
+    S.solve=d.solve||"dl";S.targetR=d.targetR||1;uid=d.uid||1;S.activeId=byId(d.activeId)?d.activeId:0;
+    if(d.rm)Object.assign(rm,d.rm);if(d.gl)Object.assign(glc,d.gl);if(d.pctLift)pctLift=d.pctLift}catch(e){}}
 
   function ranked(){var a=S.lifters.map(function(L){return{L:L,t:totalOf(L),b:bwS(L.bw)}});
     a.sort(function(x,y){if(y.t!==x.t)return y.t-x.t;if(x.b!==y.b)return x.b-y.b;return x.L.id-y.L.id});return a}
@@ -368,12 +487,20 @@
   }
 
   /* tabs */
-  function setTab(t){S.tab=t;$("tabIn").classList.toggle("on",t==="in");$("tabRk").classList.toggle("on",t==="rk");
-    $("viewIn").classList.toggle("hide",t!=="in");$("viewRk").classList.toggle("hide",t!=="rk")}
+  function setTab(t){S.tab=t;$("tabIn").classList.toggle("on",t==="in");$("tabRk").classList.toggle("on",t==="rk");$("tabTl").classList.toggle("on",t==="tl");
+    $("viewIn").classList.toggle("hide",t!=="in");$("viewRk").classList.toggle("hide",t!=="rk");$("viewTl").classList.toggle("hide",t!=="tl");
+    document.querySelector(".result").style.display=(t==="tl")?"none":"";
+    if(t==="tl")syncGL();}
 
   /* events */
   $("tabIn").addEventListener("click",function(){setTab("in")});
   $("tabRk").addEventListener("click",function(){setTab("rk")});
+  $("tabTl").addEventListener("click",function(){setTab("tl")});
+  bindTog("glSex","sex",calcGL);bindTog("glEq","eq",calcGL);bindTog("glEv","ev",calcGL);
+  $("pctLift").addEventListener("click",function(e){var b=e.target.closest("button[data-l]");if(!b)return;pctLift=b.getAttribute("data-l");$("pctLift").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)});renderPct();save()});
+  $("glBw").addEventListener("input",function(){glc.bw=$("glBw").value;calcGL();save()});
+  $("glTot").addEventListener("input",function(){glc.tot=$("glTot").value;calcGL();save()});
+  $("useTotal").addEventListener("click",syncGL);
   $("solve").addEventListener("click",function(e){var b=e.target.closest("button[data-s]");if(!b)return;S.solve=b.getAttribute("data-s");
     $("solve").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b)});refresh()});
   $("resetBtn").addEventListener("click",function(){if(!confirm("全てのリフター・試技をリセットしますか？"))return;
@@ -384,7 +511,7 @@
   /* init */
   load();
   $("solve").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-s")===S.solve)});
-  renderSwitcher();renderEditor();setTab("in");refresh();
+  toolsInit();renderSwitcher();renderEditor();setTab("in");refresh();
   if("serviceWorker" in navigator){try{navigator.serviceWorker.register("sw.js")}catch(e){}}
 })();
 </script>

@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  🌐 <a href="https://YOUR-USERNAME.github.io/bil/"><b>Live Demo</b></a>
+  🌐 <a href="https://takakuwa-mamada.github.io/self-second-app-for-powerlifting/"><b>Live Demo</b></a>
   &nbsp;·&nbsp; <a href="#-日本語">日本語</a>
   &nbsp;·&nbsp; <a href="#-english">English</a>
 </p>
@@ -75,7 +75,7 @@ npx serve .
 - PWABuilder / Expo による各ストアへのネイティブ配布
 
 ### 作者 / ライセンス
-Created by **YOUR NAME** — [GitHub](https://github.com/YOUR-USERNAME) · MIT License
+Created by **YOUR NAME** — [GitHub](https://github.com/takakuwa-mamada) · MIT License
 
 ---
 
