@@ -1,4 +1,4 @@
-const CACHE = "bil-v1";
+const CACHE = "bil-v2";
 const CORE = [
   "./", "./index.html", "./manifest.json",
   "./icons/icon-192.png", "./icons/icon-512.png",
@@ -16,13 +16,24 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
-  const sameOrigin = new URL(req.url).origin === location.origin;
-  if (sameOrigin) {
-    // cache-first for the app shell -> works fully offline
+  const url = new URL(req.url);
+  const sameOrigin = url.origin === location.origin;
+  const isHTML = req.mode === "navigate" ||
+    (req.headers.get("accept") || "").includes("text/html");
+
+  if (sameOrigin && isHTML) {
+    // network-first for the page itself -> updates show up without a version bump
+    e.respondWith(
+      fetch(req).then((res) => {
+        const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); return res;
+      }).catch(() => caches.match(req).then((hit) => hit || caches.match("./index.html")))
+    );
+  } else if (sameOrigin) {
+    // cache-first for static assets -> fast + offline
     e.respondWith(
       caches.match(req).then((hit) => hit || fetch(req).then((res) => {
         const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); return res;
-      }).catch(() => caches.match("./index.html")))
+      }))
     );
   } else {
     // fonts etc: network-first, fall back to cache
